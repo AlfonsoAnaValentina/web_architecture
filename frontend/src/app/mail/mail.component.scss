@@ -7,5 +7,17 @@
 }
 
 .sidenav-item {
+  height: 70px;
+}
+
+.sidenav-item:hover {
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+}
+
+::ng-deep .mat-list-item-content {
   height: 40px;
 }
