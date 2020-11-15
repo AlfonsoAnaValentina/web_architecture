@@ -1,8 +1,8 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { LoginService } from '../login.service'
+import { Router } from '@angular/router';
+import { LoginService } from '../login.service';
  
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -20,18 +20,30 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class LoginComponent implements OnInit {
   user: {};
+  error: {};
 
-  constructor(private service: LoginService) { }
+  constructor(
+    private service: LoginService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
 
 
   login(){
-    this.service.getUser(this.emailFormControl.value, this.passwordFormControl.value).subscribe((user) => {
-      console.log(user);
-      return this.user = user;
-    }  );
+    this.service.getUser(this.emailFormControl.value, this.passwordFormControl.value).subscribe(
+      response => {
+      console.log(response);
+      this.router.navigate(['/mail']);
+      localStorage.setItem('user', JSON.stringify(response));
+      return this.user = response;
+      },
+      error => {
+        console.log(error);
+        return this.error = error;
+      }
+    );
   }
 
   emailFormControl = new FormControl('', [

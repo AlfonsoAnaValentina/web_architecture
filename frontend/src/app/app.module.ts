@@ -9,12 +9,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MessageComponent } from './message/message.component';
+import { NewMessageComponent } from './new-message/new-message.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    MailComponent
+    MailComponent,
+    MessageComponent,
+    NewMessageComponent
   ],
   imports: [
     HttpClientModule,

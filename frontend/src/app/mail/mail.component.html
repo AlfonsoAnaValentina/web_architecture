@@ -17,31 +17,32 @@
   </mat-drawer>
   <mat-drawer-content>
     {{title}}
+    <button mat-button color="primary">Nuevo Correo</button>
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource">
     
         <!-- Position Column -->
-        <ng-container matColumnDef="position">
+        <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef> No. </th>
-          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
         </ng-container>
     
         <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <ng-container matColumnDef="fromAddress">
+          <th mat-header-cell *matHeaderCellDef> {{title === 'Recibidos' ? 'Remitente' : 'Destinatario'}}</th>
+          <td mat-cell *matCellDef="let element"> {{title === 'Recibidos' ? element.fromAddress : 'Para: ' + element.toAddress}} </td>
         </ng-container>
     
         <!-- Weight Column -->
-        <ng-container matColumnDef="weight">
-          <th mat-header-cell *matHeaderCellDef> Weight </th>
-          <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+        <ng-container matColumnDef="subject">
+          <th mat-header-cell *matHeaderCellDef> Asunto </th>
+          <td mat-cell *matCellDef="let element" (click)="readMail(element.id)"> {{element.subject}} </td>
         </ng-container>
     
         <!-- Symbol Column -->
-        <ng-container matColumnDef="symbol">
-          <th mat-header-cell *matHeaderCellDef> Symbol </th>
-          <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+        <ng-container matColumnDef="sendDate">
+          <th mat-header-cell *matHeaderCellDef> Fecha </th>
+          <td mat-cell *matCellDef="let element"> {{element.sendDate}} </td>
         </ng-container>
     
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
