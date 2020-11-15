@@ -9,7 +9,7 @@ const routes: Routes =  [
 { path: 'login', component: LoginComponent },
 { path: 'mail', component: MailComponent },
 { path: 'mailView/:userId', component: MessageComponent },
-{ path: 'newMail', component: NewMessageComponent }
+{ path: 'newMail/:mailId', component: NewMessageComponent }
 ]
 
 @NgModule({

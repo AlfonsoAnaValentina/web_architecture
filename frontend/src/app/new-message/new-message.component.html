@@ -9,17 +9,17 @@
     </div>
     <mat-form-field class="input-item" appearance="fill">
       <mat-label>Para</mat-label>
-      <input matInput [formControl]="toFormControl">
+      <input maxlength="45" matInput [formControl]="toFormControl" >
     </mat-form-field>
     <br>
     <mat-form-field class="input-item" appearance="fill">
       <mat-label>Asunto</mat-label>
-      <input matInput [formControl]="subjectFormControl">
+      <input maxlength="45" matInput [formControl]="subjectFormControl">
     </mat-form-field>
     <br>
     <mat-form-field class="input-item" appearance="fill">
       <mat-label>Mensaje</mat-label>
-      <textarea matInput [formControl]="messageFormControl"></textarea>
+      <textarea maxlength="500" rows="15" matInput [formControl]="messageFormControl"></textarea>
     </mat-form-field>
   </form>
   <div class="buttons-container">

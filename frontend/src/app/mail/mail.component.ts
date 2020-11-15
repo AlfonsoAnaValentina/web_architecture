@@ -75,11 +75,11 @@ export class MailComponent implements OnInit {
   }
 
   readMail(id) {
-    this.router.navigate([`/mailView/:${id}`]);
+    this.router.navigate([`/mailView/${id}`]);
   }
   
   sendNewMail() {
-    this.router.navigate(['/newMail']);
+    this.router.navigate(['/newMail/0']);
   }
 
   ngAfterViewInit() {
