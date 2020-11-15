@@ -1,28 +1,23 @@
-
-
-<div class="container" >
-
-<form class="example-form">
-  <mat-form-field class="example-full-width">
-    <mat-label>Email</mat-label>
-    <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
-           placeholder="Ex. pat@example.com">
-    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-      Por favor ingrese un mail valido
-    </mat-error>
-    <mat-error *ngIf="emailFormControl.hasError('required')">
-      Email es <strong>requerido</strong>
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <mat-label>Password</mat-label>
-    <input type="password" matInput [formControl]="passwordFormControl" [errorStateMatcher]="matcher">
-    <mat-error *ngIf="passwordFormControl.hasError('required')">
-      Password es <strong>requerida</strong>
-    </mat-error>
-  </mat-form-field>
-  <a mat-button (click)="login()">Ingresar</a>
-</form>
-
-
+<div class="container mat-app-background" >
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+            placeholder="Ex. pat@example.com">
+      <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+        Por favor ingrese un mail valido
+      </mat-error>
+      <mat-error *ngIf="emailFormControl.hasError('required')">
+        Email es <strong>requerido</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput [formControl]="passwordFormControl" [errorStateMatcher]="matcher">
+      <mat-error *ngIf="passwordFormControl.hasError('required')">
+        Password es <strong>requerida</strong>
+      </mat-error>
+    </mat-form-field>
+    <a mat-button (click)="login()">Ingresar</a>
+  </form>
 </div>

@@ -1,1 +1,31 @@
-<p>new-message works!</p>
+
+<div class="container mat-app-background">
+  <form class="example-form">
+    <div class="title-container">
+      <button class="button-item" mat-icon-button color="primary" (click)="back()">
+        <mat-icon>keyboard_backspace</mat-icon>
+      </button>
+      <p class="title">Nuevo Mail</p>
+    </div>
+    <mat-form-field class="input-item" appearance="fill">
+      <mat-label>Para</mat-label>
+      <input matInput [formControl]="toFormControl">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="input-item" appearance="fill">
+      <mat-label>Asunto</mat-label>
+      <input matInput [formControl]="subjectFormControl">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="input-item" appearance="fill">
+      <mat-label>Mensaje</mat-label>
+      <textarea matInput [formControl]="messageFormControl"></textarea>
+    </mat-form-field>
+  </form>
+  <div class="buttons-container">
+    <button class="button-attach" mat-icon-button color="primary">
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    <button mat-raised-button color="primary" (click)="send()">Enviar</button>
+  </div>
+</div>

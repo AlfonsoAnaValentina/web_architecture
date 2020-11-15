@@ -17,7 +17,7 @@
   </mat-drawer>
   <mat-drawer-content>
     {{title}}
-    <button mat-button color="primary">Nuevo Correo</button>
+    <button mat-button color="primary" (click)="sendNewMail()">Nuevo Correo</button>
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource">
     
@@ -36,7 +36,7 @@
         <!-- Weight Column -->
         <ng-container matColumnDef="subject">
           <th mat-header-cell *matHeaderCellDef> Asunto </th>
-          <td mat-cell *matCellDef="let element" (click)="readMail(element.id)"> {{element.subject}} </td>
+          <td class="subject-element" mat-cell *matCellDef="let element" (click)="readMail(element.id)"> {{element.subject}} </td>
         </ng-container>
     
         <!-- Symbol Column -->

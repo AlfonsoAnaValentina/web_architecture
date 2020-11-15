@@ -18,6 +18,10 @@ table {
   width: 100%;
 }
 
+td.subject-element {
+  cursor: pointer;
+}
+
 ::ng-deep .mat-list-item-content {
   height: 40px;
 }

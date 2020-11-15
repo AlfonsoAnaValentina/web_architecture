@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { MailComponent } from './mail/mail.component';
 import { MessageComponent } from './message/message.component';
+import { NewMessageComponent } from './new-message/new-message.component';
 
 const routes: Routes =  [
 { path: 'login', component: LoginComponent },
 { path: 'mail', component: MailComponent },
-{ path: 'mailView/:userId', component: MessageComponent }
+{ path: 'mailView/:userId', component: MessageComponent },
+{ path: 'newMail', component: NewMessageComponent }
 ]
 
 @NgModule({

@@ -34,13 +34,11 @@ export class LoginComponent implements OnInit {
   login(){
     this.service.getUser(this.emailFormControl.value, this.passwordFormControl.value).subscribe(
       response => {
-      console.log(response);
       this.router.navigate(['/mail']);
       localStorage.setItem('user', JSON.stringify(response));
       return this.user = response;
       },
       error => {
-        console.log(error);
         return this.error = error;
       }
     );

@@ -46,7 +46,6 @@ export class MailComponent implements OnInit {
 
   showIncome () {
     this.title = "Recibidos";
-    console.log(this.user);
     this.inboxService.getInboxMessages(this.user.mail).subscribe(
       response => {
       console.log(response);
@@ -79,6 +78,10 @@ export class MailComponent implements OnInit {
     this.router.navigate([`/mailView/:${id}`]);
   }
   
+  sendNewMail() {
+    this.router.navigate(['/newMail']);
+  }
+
   ngAfterViewInit() {
   //  this.dataSource.paginator = this.paginator;
   }
