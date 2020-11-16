@@ -19,6 +19,13 @@
     {{title}}
     <button mat-button color="primary" (click)="sendNewMail()">Nuevo Correo</button>
     <div class="mat-elevation-z8">
+     
+      a
+      b
+      <input type="file" id="avatar" (change)="onFileChange($event)" #fileInput>
+     c
+     
+     
       <table mat-table [dataSource]="dataSource">
     
         <!-- Position Column -->
@@ -30,26 +37,33 @@
         <!-- Name Column -->
         <ng-container matColumnDef="fromAddress">
           <th mat-header-cell *matHeaderCellDef> {{title === 'Recibidos' ? 'Remitente' : 'Destinatario'}}</th>
-          <td mat-cell *matCellDef="let element"> {{title === 'Recibidos' ? element.fromAddress : 'Para: ' + element.toAddress}} </td>
+          <td [ngClass]="{'unread': !element.read}" mat-cell *matCellDef="let element"> {{title === 'Recibidos' ? element.fromAddress : 'Para: ' + element.toAddress}} </td>
         </ng-container>
     
         <!-- Weight Column -->
         <ng-container matColumnDef="subject">
           <th mat-header-cell *matHeaderCellDef> Asunto </th>
-          <td class="subject-element" mat-cell *matCellDef="let element" (click)="readMail(element.id)"> {{element.subject}} </td>
+          <td [ngClass]="{'unread': !element.read}" class="subject-element" mat-cell *matCellDef="let element" (click)="readMail(element.id)"> {{element.subject}} </td>
         </ng-container>
     
         <!-- Symbol Column -->
         <ng-container matColumnDef="sendDate">
           <th mat-header-cell *matHeaderCellDef> Fecha </th>
-          <td mat-cell *matCellDef="let element"> {{element.sendDate}} </td>
+          <td [ngClass]="{'unread': !element.read}" mat-cell *matCellDef="let element"> {{element.sendDate}} </td>
         </ng-container>
     
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      
+      <mat-paginator [length]="length"
+      [pageSize]="10"
+      [pageSizeOptions]="[10]" 
+      (page)="onPaginateChange($event)"  showFirstLastButtons></mat-paginator>
     </div>
   </mat-drawer-content>
 </mat-drawer-container>
+
+
+

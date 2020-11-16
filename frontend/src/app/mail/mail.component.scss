@@ -22,6 +22,10 @@ td.subject-element {
   cursor: pointer;
 }
 
+td.unread {
+  font-weight: bold;
+}
+
 ::ng-deep .mat-list-item-content {
   height: 40px;
 }
