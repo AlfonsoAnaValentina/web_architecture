@@ -53,11 +53,20 @@ export class MailComponent implements OnInit {
 
   onPaginateChange(e){
     this.page = e.pageIndex;
-    this.showIncome ();
+    
+    if (this.title == "Recibidos")
+      this.showIncome();
+    else
+      this.showSent();
+
   }
   
 
   showIncome () {
+
+    if (this.title != "Recibidos")
+      this.page = 0;
+
     this.title = "Recibidos";
     this.inboxService.getInboxMessages(this.user.mail, this.page).subscribe(
       response => {
@@ -75,11 +84,14 @@ export class MailComponent implements OnInit {
   }
 
   showSent () {
+    if (this.title != "Enviados")
+      this.page = 0;
+
     this.title = "Enviados";
-    this.sentService.getSentMessages(this.user.mail).subscribe(
+    this.sentService.getSentMessages(this.user.mail, this.page).subscribe(
       response => {
       console.log(response);
-      this.length = response.numberOfElements
+      this.length = response.totalElements;
 
       const data = this.dataSource = response.content; 
       return data;
@@ -110,44 +122,7 @@ export class MailComponent implements OnInit {
     this.router.navigate(['/newMail/0']);
   }
 
-  selectedFile
 
-public onFileChange(event) {
-  //Select File
-  this.selectedFile = event.target.files[0];
-
-  this.inboxService.onUpload(this.selectedFile).subscribe(
-    response => {
-    console.log(response);
-    const data = this.dataSource = response.content; 
-    return data;
-    },
-    error => {
-      console.log(error);
-      return this.error = error;
-    }
-  );
-
-}
-
-  onFileChasdnge(event) {
-    let reader = new FileReader();
-    if(event.target.files && event.target.files.length > 0) {
-      let file = event.target.files[0];
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.file = {
-          filename: file.name,
-          filetype: file.type,
-          value: reader.result
-        };
-
-
-        debugger;
-
-      };
-    }
-  }
 
 
   ngAfterViewInit() {

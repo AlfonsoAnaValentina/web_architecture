@@ -18,11 +18,11 @@ export class InboxService {
     return this.http.put(`http://localhost:8080/message/${id}`, body);
   }
 
-  onUpload(selectedFile): Observable<any> {
+  onUpload(selectedFile, id): Observable<any> {
 
     const uploadImageData = new FormData();
     uploadImageData.append('imageFile', selectedFile, selectedFile.name);
-    return this.http.post('http://localhost:8080/message/upload', uploadImageData, { observe: 'response' });
+    return this.http.post('http://localhost:8080/message/'+id+'/upload-image', uploadImageData, { observe: 'response' });
   }
 
 }

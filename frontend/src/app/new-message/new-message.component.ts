@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { SendMailService } from '../send-mail.service';
+import { InboxService } from '../inbox.service';
 
 @Component({
   selector: 'app-new-message',
@@ -17,10 +18,12 @@ export class NewMessageComponent implements OnInit {
   subject
   sendDate
   fromAddress
+  selectedFile
+  dataSource
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-
+    private inboxService: InboxService,
     private service: SendMailService
   ) {
     let aux = localStorage.getItem('user');
@@ -66,15 +69,35 @@ export class NewMessageComponent implements OnInit {
       this.messageFormControl.value
     ).subscribe(
       response => {
-        this.back();
-        return this.user = response;
+        this.inboxService.onUpload(this.selectedFile, response.id ).subscribe(
+          response => {
+          console.log(response);
+          const data = this.dataSource = response.content;
+          this.back();
+          return this.user = response;
+          },
+          error => {
+            console.log(error);
+            return this.error = error;
+          }
+        );
       },
       error => {
         return this.error = error;
       }
     );
   }
-  toFormControl = new FormControl('');
+
+  public onFileChange(event) {
+    //Select File
+    this.selectedFile = event.target.files[0];  
+  }
+
+  toFormControl = new FormControl('', [
+    Validators.required,
+    Validators.email,
+  ]);
+
   subjectFormControl = new FormControl('');
   messageFormControl = new FormControl('');
 }

@@ -9,7 +9,19 @@
     </div>
     <mat-form-field class="input-item" appearance="fill">
       <mat-label>Para</mat-label>
-      <input maxlength="45" matInput [formControl]="toFormControl" >
+      <input
+        type="email"
+        maxlength="45"
+        matInput
+        [formControl]="toFormControl"
+        [errorStateMatcher]="matcher"
+      >
+      <mat-error *ngIf="toFormControl.hasError('email') && !toFormControl.hasError('required')">
+        Por favor ingrese un mail valido
+      </mat-error>
+      <mat-error *ngIf="toFormControl.hasError('required')">
+        Email es <strong>requerido</strong>
+      </mat-error>
     </mat-form-field>
     <br>
     <mat-form-field class="input-item" appearance="fill">
@@ -21,11 +33,19 @@
       <mat-label>Mensaje</mat-label>
       <textarea maxlength="500" rows="15" matInput [formControl]="messageFormControl"></textarea>
     </mat-form-field>
+    <input type="file" id="avatar" (change)="onFileChange($event)" #fileInput> 
   </form>
   <div class="buttons-container">
     <button class="button-attach" mat-icon-button color="primary">
       <mat-icon>attach_file</mat-icon>
     </button>
-    <button mat-raised-button color="primary" (click)="send()">Enviar</button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="send()"
+      [disabled]="toFormControl.hasError('email') || toFormControl.hasError('required')"
+    >
+      Enviar
+    </button>
   </div>
 </div>

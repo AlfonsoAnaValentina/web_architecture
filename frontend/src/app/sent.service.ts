@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class SentService {
 
   constructor(private http: HttpClient) { }
-  getSentMessages(mail): Observable<any> {
-    return this.http.get(`http://localhost:8080/message/sent?userMail=${mail}`);
+  getSentMessages(mail, page): Observable<any> {
+    return this.http.get(`http://localhost:8080/message/sent?userMail=${mail}&page=${page}`);
   }
 }

@@ -16,7 +16,8 @@ export class MessageComponent implements OnInit {
   message
   sendDate
   fromAddress
-  
+  image = ''
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -38,6 +39,7 @@ export class MessageComponent implements OnInit {
       this.message = response.message;
       this.sendDate = response.sendDate;
       this.fromAddress = response.fromAddress;
+      this.image = response.attached;
       },
       error => {
         console.log(error);
