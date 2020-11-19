@@ -6,6 +6,7 @@ import { MessageComponent } from './message/message.component';
 import { NewMessageComponent } from './new-message/new-message.component';
 
 const routes: Routes =  [
+{ path: '', component: LoginComponent },
 { path: 'login', component: LoginComponent },
 { path: 'mail', component: MailComponent },
 { path: 'mailView/:userId', component: MessageComponent },

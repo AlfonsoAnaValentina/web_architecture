@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { InboxService } from '../inbox.service';
 import { SentService } from '../sent.service';
 import { SendMailService } from '../send-mail.service';
 import { Router } from '@angular/router';
-import { Subscriber } from 'rxjs';
 
 @Component({
   selector: 'app-mail',
@@ -21,13 +19,15 @@ export class MailComponent implements OnInit {
   length = 0;
   page = 0;
   pageSize = 10;
+  checked = false;
   displayedColumns: any;
   dataSource: any;
   constructor(
       private inboxService: InboxService,
       private sentService: SentService,
       private sendMailService: SendMailService,
-      private router: Router
+      private router: Router,
+      private _snackBar: MatSnackBar
     ) { 
     this.isOpen = false;
     this.title = "Recibidos";
@@ -60,7 +60,6 @@ export class MailComponent implements OnInit {
       this.showSent();
 
   }
-  
 
   showIncome () {
 
@@ -108,24 +107,42 @@ export class MailComponent implements OnInit {
     this.inboxService.setAsRead(id, mail).subscribe(
       response => {
         this.router.navigate([`/mailView/${id}`]);
-        
         },
         error => {
           console.log(error);
           return this.error = error;
         }
     );
-    
   }
   
   sendNewMail() {
     this.router.navigate(['/newMail/0']);
   }
 
+  deleteMail() {
+    let selected = this.dataSource.filter(f => {
+      return f.checked;
+    });
+    if (selected.length === 0) {
+      this.openSnackBar();
+    } else {
+      this.inboxService.deleteMessages(selected).subscribe(
+        response => {
+          console.log(response);
+          location.reload();
+          return response;
+          },
+          error => {
+            console.log(error);
+            return this.error = error;
+          }
+      );
+    }
+  }
 
-
-
-  ngAfterViewInit() {
-  //  this.dataSource.paginator = this.paginator;
+  openSnackBar() {
+    this._snackBar.open('Seleccione uno o mas mensajes a eliminar.', 'Close', {
+      duration: 2000,
+    });
   }
 }

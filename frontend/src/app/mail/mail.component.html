@@ -2,7 +2,7 @@
   <button (click)=open() mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>My App</span>
+  <span>My Mail</span>
   <span class="example-spacer"></span>
   <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
@@ -18,29 +18,34 @@
   <mat-drawer-content>
     {{title}}
     <button mat-button color="primary" (click)="sendNewMail()">Nuevo Correo</button>
+    <button mat-icon-button color="warn" (click)="deleteMail()">
+      <mat-icon>delete</mat-icon>
+    </button>
     <div class="mat-elevation-z8">
           
       <table mat-table [dataSource]="dataSource">
     
-        <!-- Position Column -->
+        <!-- Checkbox Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef> No. </th>
-          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          <td mat-cell *matCellDef="let element">  
+            <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
+          </td>
         </ng-container>
     
-        <!-- Name Column -->
+        <!-- from - to Column -->
         <ng-container matColumnDef="fromAddress">
           <th mat-header-cell *matHeaderCellDef> {{title === 'Recibidos' ? 'Remitente' : 'Destinatario'}}</th>
           <td [ngClass]="{'unread': !element.read}" mat-cell *matCellDef="let element"> {{title === 'Recibidos' ? element.fromAddress : 'Para: ' + element.toAddress}} </td>
         </ng-container>
     
-        <!-- Weight Column -->
+        <!-- Subject Column -->
         <ng-container matColumnDef="subject">
           <th mat-header-cell *matHeaderCellDef> Asunto </th>
           <td [ngClass]="{'unread': !element.read}" class="subject-element" mat-cell *matCellDef="let element" (click)="readMail(element.id)"> {{element.subject}} </td>
         </ng-container>
     
-        <!-- Symbol Column -->
+        <!-- Date Column -->
         <ng-container matColumnDef="sendDate">
           <th mat-header-cell *matHeaderCellDef> Fecha </th>
           <td [ngClass]="{'unread': !element.read}" mat-cell *matCellDef="let element"> {{element.sendDate}} </td>
@@ -58,7 +63,3 @@
     </div>
   </mat-drawer-content>
 </mat-drawer-container>
-
-
-
- 

@@ -33,12 +33,18 @@
       <mat-label>Mensaje</mat-label>
       <textarea maxlength="500" rows="15" matInput [formControl]="messageFormControl"></textarea>
     </mat-form-field>
-    <input type="file" id="avatar" (change)="onFileChange($event)" #fileInput> 
+    <input hidden type="file" #imgFileInput id="avatar" (change)="onFileChange($event)" #fileInput> 
   </form>
   <div class="buttons-container">
-    <button class="button-attach" mat-icon-button color="primary">
+    <button
+      class="button-attach"
+      mat-icon-button
+      color="primary"
+      (click)="imgFileInput.click()"
+    >
       <mat-icon>attach_file</mat-icon>
     </button>
+    <p class="attach-img" *ngIf="selectedFile.name">{{selectedFile.name}}</p>
     <button
       mat-raised-button
       color="primary"

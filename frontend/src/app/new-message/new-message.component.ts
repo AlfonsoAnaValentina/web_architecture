@@ -1,9 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { SendMailService } from '../send-mail.service';
 import { InboxService } from '../inbox.service';
 
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 @Component({
   selector: 'app-new-message',
   templateUrl: './new-message.component.html',
@@ -18,7 +26,7 @@ export class NewMessageComponent implements OnInit {
   subject
   sendDate
   fromAddress
-  selectedFile
+  selectedFile = {};
   dataSource
   constructor(
     private router: Router,
@@ -71,10 +79,8 @@ export class NewMessageComponent implements OnInit {
       response => {
         this.inboxService.onUpload(this.selectedFile, response.id ).subscribe(
           response => {
-          console.log(response);
-          const data = this.dataSource = response.content;
-          this.back();
-          return this.user = response;
+            this.back();
+            return this.user = response;
           },
           error => {
             console.log(error);
@@ -91,6 +97,7 @@ export class NewMessageComponent implements OnInit {
   public onFileChange(event) {
     //Select File
     this.selectedFile = event.target.files[0];  
+    console.log(this.selectedFile);
   }
 
   toFormControl = new FormControl('', [
@@ -100,4 +107,5 @@ export class NewMessageComponent implements OnInit {
 
   subjectFormControl = new FormControl('');
   messageFormControl = new FormControl('');
+  matcher = new MyErrorStateMatcher();
 }
