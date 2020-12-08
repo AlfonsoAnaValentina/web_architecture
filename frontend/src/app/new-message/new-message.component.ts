@@ -26,7 +26,7 @@ export class NewMessageComponent implements OnInit {
   subject
   sendDate
   fromAddress
-  selectedFile = {};
+  selectedFile = {name: null};
   dataSource
   constructor(
     private router: Router,
