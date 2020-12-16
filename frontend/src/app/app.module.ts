@@ -11,6 +11,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MessageComponent } from './message/message.component';
 import { NewMessageComponent } from './new-message/new-message.component';
+import { RegisterUserComponent } from './register-user/register-user.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { NewMessageComponent } from './new-message/new-message.component';
     LoginComponent,
     MailComponent,
     MessageComponent,
-    NewMessageComponent
+    NewMessageComponent,
+    RegisterUserComponent
   ],
   imports: [
     HttpClientModule,

@@ -1,0 +1,118 @@
+<div class="container mat-app-background" >
+  <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <mat-label>Nombre</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="nameFormControl"
+          [errorStateMatcher]="matcher"
+        >
+        <mat-error *ngIf="passwordFormControl.hasError('required')">
+          Nombre es un campo <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Apellido</mat-label>
+        <input
+          matInput
+          [formControl]="lastNameFormControl"
+          [errorStateMatcher]="matcher"
+        >
+        <mat-error *ngIf="passwordFormControl.hasError('required')">
+          Apellido es un campo <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Password</mat-label>
+        <input
+          type="password"
+          matInput
+          [formControl]="passwordFormControl"
+          [errorStateMatcher]="matcher"
+        >
+        <mat-error *ngIf="passwordFormControl.hasError('required')">
+          Password es <strong>requerida</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Direccion</mat-label>
+        <input
+          matInput
+          [formControl]="addressFormControl"
+          [errorStateMatcher]="matcher"
+        >
+        <mat-error *ngIf="passwordFormControl.hasError('required')">
+          Direccion es un campo <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Telefono</mat-label>
+        <input
+          matInput
+          [formControl]="phoneFormControl"
+          [errorStateMatcher]="matcher"
+        >
+        <mat-error *ngIf="passwordFormControl.hasError('required')">
+          Telefono es un campo <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="select-field" appearance="fill">
+        <mat-label>Elija su Pais</mat-label>
+        <mat-select [formControl]="countryFormControl" (selectionChange)="getProvinces()">
+          <mat-option *ngFor="let country of countries" [value]="country.value">
+            {{country.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="select-field" appearance="fill">
+        <mat-label>Elija su Provincia</mat-label>
+        <mat-select [formControl]="provinceFormControl" (selectionChange)="getCities()">
+          <mat-option *ngFor="let prov of provinces" [value]="prov.value">
+            {{prov.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="select-field" appearance="fill">
+        <mat-label>Elija su Ciudad</mat-label>
+        <mat-select [formControl]="cityFormControl">
+          <mat-option *ngFor="let city of cities" [value]="city.value">
+            {{city.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Email Alternativo</mat-label>
+        <input
+          type="email"
+          matInput
+          [formControl]="alternativeEmailFormControl"
+          [errorStateMatcher]="matcher"
+          placeholder="Ex. pat@example.com"
+        >
+        <mat-error *ngIf="alternativeEmailFormControl.hasError('email') && !alternativeEmailFormControl.hasError('required')">
+          Por favor ingrese un mail valido
+        </mat-error>
+        <mat-error *ngIf="alternativeEmailFormControl.hasError('required')">
+          Email es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input
+          type="email"
+          matInput
+          [formControl]="emailFormControl"
+          [errorStateMatcher]="matcher"
+          placeholder="Ex. pat@example.com"
+        >
+        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+          Por favor ingrese un mail valido
+        </mat-error>
+        <mat-error *ngIf="emailFormControl.hasError('required')">
+          Email es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    <a mat-button (click)="registerUser()" [disabled]="isInvalid()">Registrarse!</a>
+  </form>
+</div>

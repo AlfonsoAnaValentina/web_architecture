@@ -44,6 +44,14 @@ export class LoginComponent implements OnInit {
     );
   }
 
+  isInvalid() {
+    return this.passwordFormControl.invalid || this.emailFormControl.invalid;
+  }
+
+  register(){
+    this.router.navigate(['/register']);
+  }
+
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,

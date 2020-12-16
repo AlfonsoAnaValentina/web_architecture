@@ -28,6 +28,9 @@
         Password es <strong>requerida</strong>
       </mat-error>
     </mat-form-field>
-    <a mat-button (click)="login()">Ingresar</a>
+    <a mat-button (click)="login()" [disabled]="isInvalid()">Ingresar</a>
   </form>
+  <div class="example-form">
+    No tiene Cuenta? <a mat-button (click)="register()">Registrese aqui</a>
+  </div>
 </div>
