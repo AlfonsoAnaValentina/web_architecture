@@ -16,15 +16,19 @@
     <mat-divider></mat-divider>
       Etiquetas
     <mat-divider></mat-divider>
-      <mat-list-item class="sidenav-sub-item" (click)="filterMails(1)">Etiqueta 1</mat-list-item>
-      <mat-divider></mat-divider>
+      <div *ngFor="let folder of folders">
+        <mat-list-item class="sidenav-sub-item" (click)="filterMails(folder.id)">{{folder.label}}</mat-list-item>
+        <mat-divider></mat-divider>
+      </div>
   </mat-drawer>
+  {{folders}}
   <mat-drawer-content>
     {{title}}
     <button mat-button color="primary" (click)="sendNewMail()">Nuevo Correo</button>
     <button mat-icon-button color="warn" (click)="deleteMail()">
       <mat-icon>delete</mat-icon>
     </button>
+    
     <a class="logout-button" mat-button (click)="logout()">Logout</a>
     <div class="mat-elevation-z8">
           

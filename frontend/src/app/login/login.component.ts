@@ -32,11 +32,12 @@ export class LoginComponent implements OnInit {
 
 
   login(){
-    this.service.getUser(this.emailFormControl.value, this.passwordFormControl.value).subscribe(
+    this.service.getUser2(this.emailFormControl.value, this.passwordFormControl.value).subscribe(
       response => {
-      this.router.navigate(['/mail']);
-      localStorage.setItem('user', JSON.stringify(response));
-      return this.user = response;
+        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('token', "Bearer " + response.token);
+        this.router.navigate(['/mail']);
+        return this.user = response;
       },
       error => {
         return this.error = error;

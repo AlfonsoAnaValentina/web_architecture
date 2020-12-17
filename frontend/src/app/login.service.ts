@@ -13,4 +13,12 @@ export class LoginService {
     return this.http.get(`http://localhost:8080/user/login?password=${pass}&userMail=${usr}`);
   }
 
+  getUser2(usr, pass): Observable<any> {
+    const usrLog = {
+      "password": pass,
+      "username": usr
+    };
+    return this.http.post(`http://localhost:8080/authenticate`, usrLog);
+  }
+
 }

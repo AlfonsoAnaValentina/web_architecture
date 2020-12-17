@@ -3,6 +3,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import { InboxService } from '../inbox.service';
 import { SentService } from '../sent.service';
 import { SendMailService } from '../send-mail.service';
+import { FoldersService } from '../folders.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,11 +23,12 @@ export class MailComponent implements OnInit {
   checked = false;
   displayedColumns: any;
   dataSource: any;
-  fileteredMessages: any;
+  folders: any;
   constructor(
       private inboxService: InboxService,
       private sentService: SentService,
       private sendMailService: SendMailService,
+      private folderService: FoldersService,
       private router: Router,
       private _snackBar: MatSnackBar
     ) { 
@@ -36,11 +38,8 @@ export class MailComponent implements OnInit {
     this.user = JSON.parse(aux);
     this.showIncome();
     this.displayedColumns = ['id', 'fromAddress', 'subject', 'sendDate'];
-    //dataSource = this.title === 'Recibidos' ? this.inbox;
     this.dataSource = this.inbox;
-    
-    //@ViewChild(MatPaginator) paginator: MatPaginator;
-
+    this.showFolders();
   }
 
   ngOnInit(): void {
@@ -104,7 +103,10 @@ export class MailComponent implements OnInit {
   }
 
   filterMails(id) {
-    this.title = "Etiqueta 1";
+    console.log(id);
+    console.log(this.folders);
+    const folder = this.folders.find(label => label.id === id );
+    this.title = folder.label;
     this.inboxService.filterMessages(id, this.user.mail, this.page).subscribe(
       response => {
       console.log(response);
@@ -112,6 +114,21 @@ export class MailComponent implements OnInit {
 
       const data = this.dataSource = response.content; 
       return data;
+      },
+      error => {
+        console.log(error);
+        return this.error = error;
+      }
+    );
+  }
+
+  showFolders() {
+    this.folderService.getAllFolders(this.user.mail).subscribe(
+      response => {
+
+      this.length = response.totalElements;
+
+      this.folders = response;
       },
       error => {
         console.log(error);
@@ -139,6 +156,7 @@ export class MailComponent implements OnInit {
 
   logout() {
     sessionStorage.clear();
+    localStorage.clear();
     this.router.navigate(['/']);
   }
 
