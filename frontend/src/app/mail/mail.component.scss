@@ -10,6 +10,16 @@
   height: 70px;
 }
 
+.sidenav-sub-item:hover {
+  cursor: pointer;
+}
+
+.logout-button {
+  position: absolute;
+  right: 10px;
+  top: 2px;
+}
+
 .sidenav-item:hover {
   cursor: pointer;
 }
@@ -28,4 +38,8 @@ td.unread {
 
 ::ng-deep .mat-list-item-content {
   height: 40px;
+}
+
+::ng-deep .sidenav-sub-item > .mat-list-item-content {
+  margin-left: 20px;
 }

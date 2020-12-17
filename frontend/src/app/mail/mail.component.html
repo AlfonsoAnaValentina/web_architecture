@@ -14,6 +14,10 @@
     <mat-divider></mat-divider>
     <mat-list-item class="sidenav-item" (click)=showSent()>Enviados</mat-list-item>
     <mat-divider></mat-divider>
+      Etiquetas
+    <mat-divider></mat-divider>
+      <mat-list-item class="sidenav-sub-item" (click)="filterMails(1)">Etiqueta 1</mat-list-item>
+      <mat-divider></mat-divider>
   </mat-drawer>
   <mat-drawer-content>
     {{title}}
@@ -21,6 +25,7 @@
     <button mat-icon-button color="warn" (click)="deleteMail()">
       <mat-icon>delete</mat-icon>
     </button>
+    <a class="logout-button" mat-button (click)="logout()">Logout</a>
     <div class="mat-elevation-z8">
           
       <table mat-table [dataSource]="dataSource">

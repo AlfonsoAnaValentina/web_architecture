@@ -22,6 +22,7 @@ export class MailComponent implements OnInit {
   checked = false;
   displayedColumns: any;
   dataSource: any;
+  fileteredMessages: any;
   constructor(
       private inboxService: InboxService,
       private sentService: SentService,
@@ -102,6 +103,23 @@ export class MailComponent implements OnInit {
     );
   }
 
+  filterMails(id) {
+    this.title = "Etiqueta 1";
+    this.inboxService.filterMessages(id, this.user.mail, this.page).subscribe(
+      response => {
+      console.log(response);
+      this.length = response.totalElements;
+
+      const data = this.dataSource = response.content; 
+      return data;
+      },
+      error => {
+        console.log(error);
+        return this.error = error;
+      }
+    );
+  }
+
   readMail(id) {
     const mail = this.sendMailService.getMail(id);
     this.inboxService.setAsRead(id, mail).subscribe(
@@ -117,6 +135,11 @@ export class MailComponent implements OnInit {
   
   sendNewMail() {
     this.router.navigate(['/newMail/0']);
+  }
+
+  logout() {
+    sessionStorage.clear();
+    this.router.navigate(['/']);
   }
 
   deleteMail() {

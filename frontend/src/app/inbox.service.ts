@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEvent, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +8,19 @@ import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 export class InboxService {
   url: '';
   constructor(private http: HttpClient) { }
+
+  
   getInboxMessages(mail,page): Observable<any> {
-    return this.http.get(`http://localhost:8080/message/received?userMail=${mail}&page=`+page);
+    const token = localStorage.getItem('token');
+    const headerDict = {
+      'Authorization': token,
+    }
+    
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders(headerDict), 
+    };
+    
+    return this.http.get(`http://localhost:8080/message/received?userMail=${mail}&page=`+page, requestOptions);
   }
 
   setAsRead(id, body): Observable<any> {
@@ -25,5 +36,9 @@ export class InboxService {
   deleteMessages(ids): Observable<any> {
     let urlPath = ids.map(item => `ids=${item.id}`);
     return this.http.delete('http://localhost:8080/message?'+urlPath.join('&'));
+  }
+
+  filterMessages(label, mail, page): Observable<any> {
+    return this.http.get(`http://localhost:8080/message/label?label=${label}&userMail=${mail}&page=`+page);
   }
 }
