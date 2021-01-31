@@ -16,4 +16,8 @@ export class FoldersService {
   createNewFolder(folder): Observable<any> {
     return this.http.post('http://localhost:8080/message/label', folder);
   }
+
+  addMailToLabel(labeledMail): Observable<any> {
+    return this.http.post('http://localhost:8080/message/mail-label', labeledMail);
+  }
 }

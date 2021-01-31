@@ -160,6 +160,30 @@ export class MailComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  setLabel(idF) {
+    let selected = this.dataSource.filter(f => {
+      return f.checked;
+    });
+    if (selected.length === 0) {
+      this.openSnackBar();
+    } else {
+      selected.forEach(element => {
+        const mail = {"id": 0, "idMessage": element.id, "idFolder": idF};
+        console.log(mail);
+        this.folderService.addMailToLabel(mail).subscribe(
+          response => {
+            console.log(response);
+            return response;
+            },
+            error => {
+              console.log(error);
+              return this.error = error;
+            }
+        );  
+      });
+    }
+  }
+
   deleteMail() {
     let selected = this.dataSource.filter(f => {
       return f.checked;

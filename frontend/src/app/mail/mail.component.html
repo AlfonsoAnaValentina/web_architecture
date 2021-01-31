@@ -28,7 +28,14 @@
     <button mat-icon-button color="warn" (click)="deleteMail()">
       <mat-icon>delete</mat-icon>
     </button>
-    
+    <mat-form-field appearance="fill">
+    <mat-label>Etiquetas</mat-label>
+      <mat-select>
+          <mat-option *ngFor="let folder of folders" [value]="folder.id"  (click)="setLabel(folder.id)">
+            {{folder.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>    
     <a class="logout-button" mat-button (click)="logout()">Logout</a>
     <div class="mat-elevation-z8">
           
