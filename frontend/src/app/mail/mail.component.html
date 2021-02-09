@@ -10,10 +10,17 @@
 </mat-toolbar>
 <mat-drawer-container class="main-container">
   <mat-drawer class="sidenav-container" mode="side" [opened]="isOpen">
-    <mat-list-item class="sidenav-item" (click)=showIncome() >Recibidos</mat-list-item>
+    <mat-list-item class="sidenav-item" (click)=showIncome() >
+      <mat-icon>inbox</mat-icon>
+      Recibidos
+    </mat-list-item>
     <mat-divider></mat-divider>
-    <mat-list-item class="sidenav-item" (click)=showSent()>Enviados</mat-list-item>
+    <mat-list-item class="sidenav-item" (click)=showSent()>
+      <mat-icon>send</mat-icon>
+      Enviados
+    </mat-list-item>
     <mat-divider></mat-divider>
+      <mat-icon>folder_open</mat-icon>
       Etiquetas
     <mat-divider></mat-divider>
       <div *ngFor="let folder of folders">
@@ -24,18 +31,33 @@
   {{folders}}
   <mat-drawer-content>
     {{title}}
-    <button mat-button color="primary" (click)="sendNewMail()">Nuevo Correo</button>
-    <button mat-icon-button color="warn" (click)="deleteMail()">
+    <button mat-button  matTooltip="Crear Mail" color="primary" (click)="sendNewMail()">
+      <mat-icon> email</mat-icon>
+    </button>
+    <button mat-icon-button  matTooltip="Eliminar" color="warn" (click)="deleteMail()">
       <mat-icon>delete</mat-icon>
     </button>
-    <mat-form-field appearance="fill">
-    <mat-label>Etiquetas</mat-label>
-      <mat-select>
-          <mat-option *ngFor="let folder of folders" [value]="folder.id"  (click)="setLabel(folder.id)">
-            {{folder.label}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>    
+    <button mat-icon-button  matTooltip="Crear Nueva Carpeta" color="primary" (click)="createFolder()">
+      <mat-icon>create_new_folder</mat-icon>
+    </button>
+
+
+      <button mat-icon-button matTooltip="Agregar A Carpeta"
+       [matMenuTriggerFor]="settingsMenu" color="primary" >
+        <mat-icon>label</mat-icon>
+      </button>
+      
+      <mat-menu #settingsMenu="matMenu">
+        <ng-container *ngFor="let folder of folders">
+          <menu mat-menu-item (click)="setLabel(folder.id)">{{folder.label}}</menu>
+        </ng-container>
+      </mat-menu>
+      <!--
+      <mat-menu #settingsMenu="matMenu" *ngFor="let folder of folders">
+        <button mat-menu-item (click)="setLabel(folder.id)">{{folder.label}}</button>
+      </mat-menu> 
+-->
+
     <a class="logout-button" mat-button (click)="logout()">Logout</a>
     <div class="mat-elevation-z8">
           
@@ -64,7 +86,7 @@
         <!-- Date Column -->
         <ng-container matColumnDef="sendDate">
           <th mat-header-cell *matHeaderCellDef> Fecha </th>
-          <td [ngClass]="{'unread': !element.read}" mat-cell *matCellDef="let element"> {{element.sendDate}} </td>
+          <td [ngClass]="{'unread': !element.read}" mat-cell *matCellDef="let element"> {{element.sendDate | date:'dd/MM/yyyy'}} </td>
         </ng-container>
     
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

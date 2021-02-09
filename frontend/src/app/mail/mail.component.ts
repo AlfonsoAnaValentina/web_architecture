@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatMenuModule} from '@angular/material/menu';
 import { InboxService } from '../inbox.service';
 import { SentService } from '../sent.service';
 import { SendMailService } from '../send-mail.service';
@@ -30,7 +31,8 @@ export class MailComponent implements OnInit {
       private sendMailService: SendMailService,
       private folderService: FoldersService,
       private router: Router,
-      private _snackBar: MatSnackBar
+      private _snackBar: MatSnackBar,
+      private _menuModel: MatMenuModule
     ) { 
     this.isOpen = false;
     this.title = "Recibidos";
@@ -165,7 +167,7 @@ export class MailComponent implements OnInit {
       return f.checked;
     });
     if (selected.length === 0) {
-      this.openSnackBar();
+      this.openSnackBar('etiquetar');
     } else {
       selected.forEach(element => {
         const mail = {"id": 0, "idMessage": element.id, "idFolder": idF};
@@ -184,12 +186,21 @@ export class MailComponent implements OnInit {
     }
   }
 
+  createFolder() {
+    console.log('aca iria el create folder');
+  }
+
+
+  filterByLabel() {
+    console.log('este es dummy lo tengo que borrar');
+  }
+
   deleteMail() {
     let selected = this.dataSource.filter(f => {
       return f.checked;
     });
     if (selected.length === 0) {
-      this.openSnackBar();
+      this.openSnackBar('eliminar');
     } else {
       this.inboxService.deleteMessages(selected).subscribe(
         response => {
@@ -205,8 +216,8 @@ export class MailComponent implements OnInit {
     }
   }
 
-  openSnackBar() {
-    this._snackBar.open('Seleccione uno o mas mensajes a eliminar.', 'Close', {
+  openSnackBar(verb) {
+    this._snackBar.open(`Seleccione uno o mas mensajes a ${verb}.`, 'X', {
       duration: 2000,
     });
   }

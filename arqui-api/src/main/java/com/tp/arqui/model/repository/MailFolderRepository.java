@@ -11,7 +11,7 @@ import com.tp.arqui.model.MailFolderModel;
 @Repository
 public interface MailFolderRepository extends PagingAndSortingRepository<MailFolderModel, Integer> {
 	
-	Page<FolderModel> findByIdMessage(Integer idMessage, Pageable pageable);
-	Page<FolderModel> findByIdFolder(Integer idFolder, Pageable pageable);
-	Page<FolderModel> findByIdMessageAndIdFolder(Integer idMessage, Integer idFolder, Pageable pageable);
+	Page<MailFolderModel> findByIdMessage(Integer idMessage, Pageable pageable);
+	Page<MailFolderModel> findByIdFolder(Integer idFolder, Pageable pageable);
+	Page<MailFolderModel> findByIdMessageAndIdFolder(Integer idMessage, Integer idFolder, Pageable pageable);
 }

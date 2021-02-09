@@ -183,13 +183,19 @@ public class MessageServiceImpl implements IMessageService {
 	@Override
 	public MailFolderDTO addLabeledMail(@Valid MailFolderDTO req) {
 		MailFolderModel request = modelMapper.map(req, MailFolderModel.class);
-		MailFolderModel newLabel = mailFolderRepository.save(request);
-		req.setId(newLabel.getId());
+		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+		Page<MailFolderModel> labeled = mailFolderRepository.findByIdMessage(request.getIdMessage(), pageable);
+		if (labeled.isEmpty()) {
+			MailFolderModel newLabel = mailFolderRepository.save(request);
+			req.setId(newLabel.getId());
+		}
+
 		return req;
 	}
 	
 	@Override
 	public void addMultipleLabeledMail(List<MailFolderDTO> mails) {
+			
 		mails.forEach(mail -> addLabeledMail(mail));
 	}
 

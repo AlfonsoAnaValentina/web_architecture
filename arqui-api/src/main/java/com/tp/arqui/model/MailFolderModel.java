@@ -19,8 +19,8 @@ public class MailFolderModel {
 	private Integer id;
 	
 	@Column(name = "id_mail")
-	private String idMessage;
+	private Integer idMessage;
 	
 	@Column(name = "id_folder")
-	private String idFolder;
+	private Integer idFolder;
 }
