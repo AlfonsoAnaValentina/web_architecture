@@ -80,8 +80,8 @@ public class MessageController {
 	}
 	
 	@GetMapping("/labels")
-	public List<FolderDTO> getAllLabels(@RequestParam String userMail) {
-		List<FolderDTO> response = msgService.getAllLabels(userMail);
+	public List<FolderDTO> getAllLabels(@RequestParam int userId) {
+		List<FolderDTO> response = msgService.getAllLabels(userId);
 		return response;
 	}
 	

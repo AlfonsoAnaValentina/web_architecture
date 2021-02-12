@@ -35,7 +35,7 @@ public interface IMessageService {
 
 	Page<LabeledMailDTO> getAllLabeledMessages(String ToAddress, Integer label, Pageable pageable);
 
-	List<FolderDTO> getAllLabels(String userMail);
+	List<FolderDTO> getAllLabels(int idUser);
 
 	FolderDTO createLabel(@Valid FolderDTO req);
 

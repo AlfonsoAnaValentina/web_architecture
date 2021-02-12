@@ -20,6 +20,9 @@ public class LabeledMailModel {
 	
 	@Column(name = "id_folder")
 	private Integer idFolder;
+	
+	@Column(name = "id_user")
+	private Integer idUser;
 
 	@Column(name = "to_address")
 	private String toAddress;

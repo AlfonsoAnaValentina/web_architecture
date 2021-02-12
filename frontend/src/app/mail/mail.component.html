@@ -37,26 +37,28 @@
     <button mat-icon-button  matTooltip="Eliminar" color="warn" (click)="deleteMail()">
       <mat-icon>delete</mat-icon>
     </button>
-    <button mat-icon-button  matTooltip="Crear Nueva Carpeta" color="primary" (click)="createFolder()">
+    <button
+      mat-icon-button 
+      matTooltip="Crear Nueva Carpeta"
+      color="primary"
+      (click)="openDialog()"
+    >
       <mat-icon>create_new_folder</mat-icon>
     </button>
-
-
-      <button mat-icon-button matTooltip="Agregar A Carpeta"
-       [matMenuTriggerFor]="settingsMenu" color="primary" >
-        <mat-icon>label</mat-icon>
-      </button>
+    <button
+      mat-icon-button matTooltip="Agregar A Carpeta"
+      [matMenuTriggerFor]="settingsMenu"
+      color="primary"
+    >
+      <mat-icon>label</mat-icon>
+    </button>
       
       <mat-menu #settingsMenu="matMenu">
         <ng-container *ngFor="let folder of folders">
           <menu mat-menu-item (click)="setLabel(folder.id)">{{folder.label}}</menu>
         </ng-container>
       </mat-menu>
-      <!--
-      <mat-menu #settingsMenu="matMenu" *ngFor="let folder of folders">
-        <button mat-menu-item (click)="setLabel(folder.id)">{{folder.label}}</button>
-      </mat-menu> 
--->
+
 
     <a class="logout-button" mat-button (click)="logout()">Logout</a>
     <div class="mat-elevation-z8">

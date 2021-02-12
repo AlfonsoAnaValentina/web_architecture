@@ -11,4 +11,5 @@ import com.tp.arqui.model.FolderModel;
 public interface FolderRepository extends PagingAndSortingRepository<FolderModel, Integer> {
 	
 	Page<FolderModel> findById(Integer id, Pageable pageable);
+	Page<FolderModel> findDistinctByIdUser(Integer userId, Pageable pageable);
 }

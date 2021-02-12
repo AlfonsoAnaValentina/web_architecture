@@ -155,19 +155,14 @@ public class MessageServiceImpl implements IMessageService {
 	}
 
 	@Override
-	public List<FolderDTO> getAllLabels(String toAddress) {
+	public List<FolderDTO> getAllLabels(int id) {
 		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
-		List<LabeledMailModel> reportList = labeledMsgRepository.findDistinctByToAddress(toAddress, pageable);
+		Page<FolderModel> reportList = folderRepository.findDistinctByIdUser(id, pageable);
 		List<FolderDTO> aux = new ArrayList<FolderDTO>();
 		
-		for (LabeledMailModel labeledMsgModel : reportList) {
+		for (FolderModel folderModel : reportList.getContent()) {
+			aux.add(modelMapper.map(folderModel, FolderDTO.class));
 			
-			FolderDTO a = new FolderDTO(labeledMsgModel.getIdFolder(), labeledMsgModel.getFolderLabel());
-			
-			if (!aux.contains(a)) {
-				aux.add(a);
-			}
-		
 		}
 		return aux;
 	}

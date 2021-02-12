@@ -14,4 +14,5 @@ public class FolderDTO {
 
 	private String label;
 
+	private Integer idUser;
 }

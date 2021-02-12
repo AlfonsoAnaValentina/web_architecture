@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
 import { InboxService } from '../inbox.service';
 import { SentService } from '../sent.service';
@@ -7,11 +9,16 @@ import { SendMailService } from '../send-mail.service';
 import { FoldersService } from '../folders.service';
 import { Router } from '@angular/router';
 
+export interface DialogData {
+  name: string;
+}
+
 @Component({
   selector: 'app-mail',
   templateUrl: './mail.component.html',
   styleUrls: ['./mail.component.scss']
 })
+
 export class MailComponent implements OnInit {
   isOpen: boolean;
   title: string;
@@ -25,6 +32,8 @@ export class MailComponent implements OnInit {
   displayedColumns: any;
   dataSource: any;
   folders: any;
+  newFolder: any;
+  name: string;
   constructor(
       private inboxService: InboxService,
       private sentService: SentService,
@@ -32,7 +41,8 @@ export class MailComponent implements OnInit {
       private folderService: FoldersService,
       private router: Router,
       private _snackBar: MatSnackBar,
-      private _menuModel: MatMenuModule
+      private _menuModel: MatMenuModule,
+      public dialog: MatDialog
     ) { 
     this.isOpen = false;
     this.title = "Recibidos";
@@ -42,6 +52,7 @@ export class MailComponent implements OnInit {
     this.displayedColumns = ['id', 'fromAddress', 'subject', 'sendDate'];
     this.dataSource = this.inbox;
     this.showFolders();
+    
   }
 
   ngOnInit(): void {
@@ -125,7 +136,7 @@ export class MailComponent implements OnInit {
   }
 
   showFolders() {
-    this.folderService.getAllFolders(this.user.mail).subscribe(
+    this.folderService.getAllFolders(this.user.id).subscribe(
       response => {
 
       this.length = response.totalElements;
@@ -171,7 +182,6 @@ export class MailComponent implements OnInit {
     } else {
       selected.forEach(element => {
         const mail = {"id": 0, "idMessage": element.id, "idFolder": idF};
-        console.log(mail);
         this.folderService.addMailToLabel(mail).subscribe(
           response => {
             console.log(response);
@@ -221,4 +231,47 @@ export class MailComponent implements OnInit {
       duration: 2000,
     });
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(FolderDialog, {
+      width: '250px',
+      data: {name: this.name }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.newFolder = {
+        id: 0,
+        label: result,
+        idUser: this.user.id
+      };
+      this.name = result;
+      this.folderService.createNewFolder(this.newFolder).subscribe(
+        response => {
+            console.log('Folder created!');
+          },
+          error => {
+            console.log(error);
+            return this.error = error;
+          }
+      );
+    });
+  }
+
+}
+
+@Component({
+  selector: 'folder-dialog',
+  templateUrl: 'folder-dialog.html',
+})
+export class FolderDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<FolderDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }

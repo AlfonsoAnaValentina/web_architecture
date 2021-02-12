@@ -20,4 +20,7 @@ public class FolderModel {
 	private Integer id;
 
 	private String label;
+	
+	@Column(name = "id_user")
+	private Integer idUser;
 }

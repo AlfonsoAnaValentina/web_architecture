@@ -5,7 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { MailComponent } from './mail/mail.component';
+import { MailComponent, FolderDialog } from './mail/mail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -21,7 +21,8 @@ import { RegisterUserComponent } from './register-user/register-user.component';
     MailComponent,
     MessageComponent,
     NewMessageComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    FolderDialog
   ],
   imports: [
     HttpClientModule,
