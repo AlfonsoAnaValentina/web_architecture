@@ -9,4 +9,5 @@ public class MailFolderDTO {
 	private Integer idMessage;
 	
 	private Integer idFolder;
+
 }

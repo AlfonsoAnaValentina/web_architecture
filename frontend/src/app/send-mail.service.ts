@@ -10,6 +10,7 @@ export class SendMailService {
   constructor(private http: HttpClient) { }
 
   sendMail(fromAdrs, toAdr, subject, message): Observable<any> {
+    console.log(toAdr);
     const newMail = {
       "fromAddress": fromAdrs,
       "message": message,

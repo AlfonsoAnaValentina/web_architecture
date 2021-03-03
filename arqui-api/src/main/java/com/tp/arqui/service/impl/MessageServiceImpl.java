@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,15 +25,21 @@ import com.tp.arqui.dto.FolderDTO;
 import com.tp.arqui.dto.LabeledMailDTO;
 import com.tp.arqui.dto.MailFolderDTO;
 import com.tp.arqui.dto.MessageDTO;
+import com.tp.arqui.dto.ReceiverDTO;
 import com.tp.arqui.model.FolderModel;
 import com.tp.arqui.model.LabeledMailModel;
 import com.tp.arqui.model.MailFolderModel;
 import com.tp.arqui.model.MessageModel;
+import com.tp.arqui.model.ReceiverModel;
+import com.tp.arqui.model.UserModel;
 import com.tp.arqui.model.repository.FolderRepository;
 import com.tp.arqui.model.repository.LabeledMailRepository;
 import com.tp.arqui.model.repository.MailFolderRepository;
 import com.tp.arqui.model.repository.MessageRepository;
+import com.tp.arqui.model.repository.ReceiverRepository;
+import com.tp.arqui.model.repository.UserRepository;
 import com.tp.arqui.service.IMessageService;
+import com.tp.arqui.service.IReceiverService;
 
 @Service
 public class MessageServiceImpl implements IMessageService {
@@ -49,7 +54,13 @@ public class MessageServiceImpl implements IMessageService {
 	private FolderRepository folderRepository;
 	@Autowired
 	private MailFolderRepository mailFolderRepository;
-
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private ReceiverRepository receiverRepository;
+	@Autowired
+	private IReceiverService receiverService;
+	
 	@Autowired
 	private ModelMapper modelMapper;
 
@@ -69,21 +80,44 @@ public class MessageServiceImpl implements IMessageService {
 		Page<MessageModel> reportList = msgRepository.findByFromAddress(userMail, pageable);
 		List<MessageDTO> aux = new ArrayList<MessageDTO>();
 		for (MessageModel prodModel : reportList.getContent()) {
-			aux.add(modelMapper.map(prodModel, MessageDTO.class));
+			MessageDTO msg = modelMapper.map(prodModel, MessageDTO.class);
+			msg.setToAddress(new ArrayList<>());
+			msg.getToAddress().addAll(getEmailName(msg, ReceiverDTO.TO));
+
+			msg.setToCcAddress(new ArrayList<>());
+			msg.getToCcAddress().addAll(getEmailName(msg, ReceiverDTO.CC));
+
+			msg.setToCcoAddress(new ArrayList<>());
+			msg.getToCcoAddress().addAll(getEmailName(msg, ReceiverDTO.CCO));
+
+			
+			aux.add(msg);
 		}
 		Page<MessageDTO> response = new PageImpl<MessageDTO>(aux, pageable, reportList.getTotalElements());
 		return response;
 
 	}
 
+	private List<String> getEmailName(MessageDTO msg, int type) {
+		List<String> emails = new ArrayList<>();
+		List<ReceiverModel> toRec = receiverRepository.findByIdMailAndType(msg.getId(), type);
+		for (ReceiverModel recModel : toRec) {
+			Optional<UserModel> usr = userRepository.findById(recModel.getIdReceiver());
+			emails.add(usr.isPresent() ? usr.get().getMail() : "Unknown User");
+		}
+		return emails;
+	}
+
 	@Override
 	public Page<MessageDTO> getAllReceivedMessages(String userMail, Pageable pageable) {
-		Page<MessageModel> reportList = msgRepository.findByToAddress(userMail, pageable);
+		UserModel idUser = userRepository.findByMail(userMail);
+		List<ReceiverDTO> receivedMsgs = receiverService.getReceivedMails(idUser.getId());
 		List<MessageDTO> aux = new ArrayList<MessageDTO>();
-		for (MessageModel msgModel : reportList.getContent()) {
-			aux.add(modelMapper.map(msgModel, MessageDTO.class));
+		for (ReceiverDTO msgModel : receivedMsgs) {
+			Optional<MessageModel> findById = msgRepository.findById(msgModel.getIdMail());
+			aux.add(modelMapper.map(findById.get(), MessageDTO.class));
 		}
-		Page<MessageDTO> response = new PageImpl<MessageDTO>(aux, pageable, reportList.getTotalElements());
+		Page<MessageDTO> response = new PageImpl<MessageDTO>(aux, pageable, receivedMsgs.size());
 		return response;
 	}
 
@@ -122,6 +156,23 @@ public class MessageServiceImpl implements IMessageService {
 		request.setRead(false);
 		MessageModel newMsg = msgRepository.save(request);
 		req.setId(newMsg.getId());
+		
+		List<ReceiverDTO> aa = new ArrayList<>();
+		
+		for (String add : req.getToAddress()) {
+			
+			ReceiverDTO ee = new ReceiverDTO();
+			ee.setIdMail(newMsg.getId());
+			UserModel usr = userRepository.findByMail(add);
+			
+			ee.setIdReceiver(usr.getId());
+			
+			ee.setType(0);
+			
+			aa.add(ee);
+		}
+		receiverService.setMultiplesReceivers(aa);
+		
 		return req;
 
 	}
@@ -145,12 +196,18 @@ public class MessageServiceImpl implements IMessageService {
 
 	@Override
 	public Page<LabeledMailDTO> getAllLabeledMessages(String toAddress, Integer label, Pageable pageable) {
-		Page<LabeledMailModel> reportList = labeledMsgRepository.findByToAddressAndIdFolder(toAddress, label, pageable);
+		UserModel idUser = userRepository.findByMail(toAddress);
+		List<ReceiverDTO> receivedMsgs = receiverService.getReceivedMails(idUser.getId());
 		List<LabeledMailDTO> aux = new ArrayList<LabeledMailDTO>();
-		for (LabeledMailModel labeledMsgModel : reportList.getContent()) {
-			aux.add(modelMapper.map(labeledMsgModel, LabeledMailDTO.class));
+		for (ReceiverDTO msgModel : receivedMsgs) {
+			Page<LabeledMailModel> reportList = labeledMsgRepository.findByIdMessageAndIdFolder(msgModel.getIdMail(), label, pageable);
+			for (LabeledMailModel l : reportList) {
+				aux.add(modelMapper.map(l, LabeledMailDTO.class));
+
+			}
 		}
-		Page<LabeledMailDTO> response = new PageImpl<LabeledMailDTO>(aux, pageable, reportList.getTotalElements());
+		
+		Page<LabeledMailDTO> response = new PageImpl<LabeledMailDTO>(aux, pageable, aux.size());
 		return response;
 	}
 

@@ -16,8 +16,7 @@ public interface MessageRepository extends PagingAndSortingRepository<MessageMod
 	List<MessageModel> findAllByOrderBySendDateDesc();
 
 	Page<MessageModel> findByFromAddress(String userMail, Pageable pageable);
-
-	Page<MessageModel> findByToAddress(String userMail, Pageable pageable);
-
+	
+	Page<MessageModel> findById(Integer id, Pageable pageable);
 	
 }

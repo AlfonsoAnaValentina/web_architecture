@@ -25,6 +25,28 @@
     </mat-form-field>
     <br>
     <mat-form-field class="input-item" appearance="fill">
+      <mat-label>Cc</mat-label>
+      <input
+        type="email"
+        maxlength="45"
+        matInput
+        [formControl]="ccFormControl"
+        [errorStateMatcher]="matcher"
+      >
+    </mat-form-field>
+    <br>
+    <mat-form-field class="input-item" appearance="fill">
+      <mat-label>Cco</mat-label>
+      <input
+        type="email"
+        maxlength="45"
+        matInput
+        [formControl]="ccoFormControl"
+        [errorStateMatcher]="matcher"
+      >
+    </mat-form-field>
+    <br>
+    <mat-form-field class="input-item" appearance="fill">
       <mat-label>Asunto</mat-label>
       <input maxlength="45" matInput [formControl]="subjectFormControl">
     </mat-form-field>

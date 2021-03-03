@@ -19,9 +19,6 @@ public class MessageModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	private Integer id;
-
-	@Column(name = "to_address")
-	private String toAddress;
 	
 	@Column(name = "from_address")
 	private String fromAddress;

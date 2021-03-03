@@ -26,8 +26,11 @@ export class NewMessageComponent implements OnInit {
   subject
   sendDate
   fromAddress
+  ccAddress
+  ccoAddress
   selectedFile = {name: null};
   dataSource
+  receipiets: []
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -55,6 +58,10 @@ export class NewMessageComponent implements OnInit {
           this.sendDate = response.sendDate;
           this.fromAddress = response.fromAddress;
           this.toFormControl.setValue(this.fromAddress);
+          this.ccAddress = response.toCcAddress;
+          this.ccFormControl.setValue(this.ccAddress);
+          this.ccoAddress = response.toCcoAddress;
+          this.ccoFormControl.setValue(this.ccoAddress);
         },
         error => {
           console.log(error);
@@ -68,11 +75,33 @@ export class NewMessageComponent implements OnInit {
   back() {
     this.router.navigate(['/mail']);
   }
+  
+  splitReceipientsArray (string) {
+    return string != '' ? string.split(/\s*,\s*/) : [];
+  }
+
+  getReceipients() {
+    const to = this.splitReceipientsArray(this.toFormControl.value + '');
+    const cc = this.splitReceipientsArray(this.ccFormControl.value + '');
+    const cco = this.splitReceipientsArray(this.ccoFormControl.value + '');
+    if (cc.length != 0) {
+      cc.map((value)=> {
+        to.push(value);
+      });
+    }
+    if (cco.length != 0) {
+      cco.map((value)=> {
+        to.push(value);
+      });
+    }
+    this.receipiets = to;
+  }
 
   send() {
+    this.getReceipients();
     this.service.sendMail(
       this.user.mail,
-      this.toFormControl.value,
+      this.receipiets,
       this.subjectFormControl.value,
       this.messageFormControl.value
     ).subscribe(
@@ -107,5 +136,8 @@ export class NewMessageComponent implements OnInit {
 
   subjectFormControl = new FormControl('');
   messageFormControl = new FormControl('');
+  ccFormControl = new FormControl('');
+  ccoFormControl = new FormControl('');
+
   matcher = new MyErrorStateMatcher();
 }

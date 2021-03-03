@@ -37,11 +37,11 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserModel getUsername(String userMail) {
-		List<UserModel> response = userRepository.findByMail(userMail);
-		if (response.isEmpty())
+		UserModel response = userRepository.findByMail(userMail);
+		if (response == null)
 			throw new RuntimeException("Wrong Email or Password");
 		else 
-			return response.get(0);
+			return response;
 	}
 
 	@Override

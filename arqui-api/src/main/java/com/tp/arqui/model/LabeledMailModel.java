@@ -23,9 +23,6 @@ public class LabeledMailModel {
 	
 	@Column(name = "id_user")
 	private Integer idUser;
-
-	@Column(name = "to_address")
-	private String toAddress;
 	
 	@Column(name = "from_address")
 	private String fromAddress;

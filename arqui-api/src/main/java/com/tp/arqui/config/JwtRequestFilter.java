@@ -1,6 +1,9 @@
 package com.tp.arqui.config;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,11 +28,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
+		
 		final String requestTokenHeader = request.getHeader("Authorization");
 		String username = null;
 		String jwtToken = null;
 		
 		if (request.getMethod().toString().equals("OPTIONS")) {
+			chain.doFilter(request, response);
+			return;
+		}
+		
+		List<String> skipped = Arrays.asList("/favicon.ico","/swagger-ui.html");
+		
+		
+		if (skipped.contains(request.getRequestURI())) {
 			chain.doFilter(request, response);
 			return;
 		}

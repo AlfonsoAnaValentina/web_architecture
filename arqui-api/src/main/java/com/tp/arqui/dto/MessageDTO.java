@@ -1,5 +1,7 @@
 package com.tp.arqui.dto;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
@@ -13,7 +15,11 @@ public class MessageDTO {
 	
 	private Integer id;
 
-	private String toAddress;
+	private List<String> toAddress;
+	
+	private List<String> toCcAddress;
+	
+	private List<String> toCcoAddress;
 	
 	private String fromAddress;
 
