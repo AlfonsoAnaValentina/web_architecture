@@ -178,13 +178,14 @@ export class MailComponent implements OnInit {
       return f.checked;
     });
     if (selected.length === 0) {
-      this.openSnackBar('etiquetar');
+      this.openSnackBar('etiquetar', null);
     } else {
       selected.forEach(element => {
         const mail = {"id": 0, "idMessage": element.id, "idFolder": idF};
         this.folderService.addMailToLabel(mail).subscribe(
           response => {
             console.log(response);
+            this.openSnackBar('', 'Mensaje(s) etiquetado(s)');
             return response;
             },
             error => {
@@ -196,26 +197,18 @@ export class MailComponent implements OnInit {
     }
   }
 
-  createFolder() {
-    console.log('aca iria el create folder');
-  }
-
-
-  filterByLabel() {
-    console.log('este es dummy lo tengo que borrar');
-  }
-
   deleteMail() {
     let selected = this.dataSource.filter(f => {
       return f.checked;
     });
     if (selected.length === 0) {
-      this.openSnackBar('eliminar');
+      this.openSnackBar('eliminar', null);
     } else {
       this.inboxService.deleteMessages(selected).subscribe(
         response => {
           console.log(response);
           location.reload();
+          this.openSnackBar('', 'Mensaje(s) Eliminado(s)');
           return response;
           },
           error => {
@@ -226,9 +219,10 @@ export class MailComponent implements OnInit {
     }
   }
 
-  openSnackBar(verb) {
-    this._snackBar.open(`Seleccione uno o mas mensajes a ${verb}.`, 'X', {
-      duration: 2000,
+  openSnackBar(verb, msg) {
+    const msgDisplay = verb != '' ? `Seleccione uno o mas mensajes a ${verb}.` : msg;
+    this._snackBar.open(msgDisplay, 'X', {
+      duration: 4000,
     });
   }
 
@@ -249,6 +243,7 @@ export class MailComponent implements OnInit {
       this.folderService.createNewFolder(this.newFolder).subscribe(
         response => {
             console.log('Folder created!');
+            this.openSnackBar('', 'Carpeta Creada');
           },
           error => {
             console.log(error);

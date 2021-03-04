@@ -25,6 +25,7 @@ public class ReceiverServiceImpl implements IReceiverService{
 	@Override
 	public ReceiverDTO setNewReceiver(ReceiverDTO newReceiver) {
 		ReceiverModel request = modelMapper.map(newReceiver, ReceiverModel.class);
+		request.setDate(System.currentTimeMillis());
 		ReceiverModel newUsr = receiverRepository.save(request);
 		return newReceiver;
 	}
@@ -40,7 +41,7 @@ public class ReceiverServiceImpl implements IReceiverService{
 	@Override
 	public List<ReceiverDTO> getReceivers(Integer idMail, Integer type) {
 		
-		List<ReceiverModel> aa = receiverRepository.findByIdMailAndType(idMail, type);
+		List<ReceiverModel> aa = receiverRepository.findByIdMailAndTypeOrderByDate(idMail, type);
 		
 		List<ReceiverDTO> receptores = new ArrayList<>();
 		for (ReceiverModel rm : aa) {
@@ -52,7 +53,7 @@ public class ReceiverServiceImpl implements IReceiverService{
 
 	@Override
 	public List<ReceiverDTO> getReceivedMails(Integer idMail) {
-		List<ReceiverModel> aa = receiverRepository.findByIdReceiver(idMail);
+		List<ReceiverModel> aa = receiverRepository.findByIdReceiverOrderByDate(idMail);
 		
 		List<ReceiverDTO> receptores = new ArrayList<>();
 		for (ReceiverModel rm : aa) {

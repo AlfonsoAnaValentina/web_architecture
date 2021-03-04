@@ -14,11 +14,11 @@ import com.tp.arqui.model.ReceiverModel;
 @Repository
 public interface ReceiverRepository extends PagingAndSortingRepository<ReceiverModel, Integer> {
 
-	List<ReceiverModel> findAllByOrderByIdMail(String idMail, Pageable pageable);
 
-	List<ReceiverModel> findByIdMailAndType(Integer idMail, Integer type);
+
+	List<ReceiverModel> findByIdMailAndTypeOrderByDate(Integer idMail, Integer type);
 	
-	List<ReceiverModel> findByIdReceiver(Integer idMail);
+	List<ReceiverModel> findByIdReceiverOrderByDate(Integer idMail);
 
 	
 }

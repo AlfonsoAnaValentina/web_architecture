@@ -29,6 +29,9 @@
       </mat-error>
     </mat-form-field>
     <button mat-button (click)="login()" [disabled]="isInvalid()">Ingresar</button>
+    <mat-error *ngIf="error">
+      El Mail y/o la Contraseña no coinciden
+    </mat-error>
   </form>
   <div class="example-form">
     No tiene Cuenta? <a mat-button (click)="register()">Registrese aqui</a>

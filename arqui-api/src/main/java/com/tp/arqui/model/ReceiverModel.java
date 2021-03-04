@@ -25,6 +25,9 @@ public class ReceiverModel {
 	@Column(name = "id_receiver")
 	private Integer idReceiver;
 
+	
+	private Long date;
+
 	private Integer type;
 }
 

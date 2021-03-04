@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { SendMailService } from '../send-mail.service';
@@ -35,7 +36,8 @@ export class NewMessageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private inboxService: InboxService,
-    private service: SendMailService
+    private service: SendMailService,
+    private _snackBar: MatSnackBar,
   ) {
     let aux = localStorage.getItem('user');
     this.user = JSON.parse(aux);
@@ -56,7 +58,7 @@ export class NewMessageComponent implements OnInit {
           this.subject = `Re: ${response.subject}`;
           this.subjectFormControl.setValue(this.subject);
           this.sendDate = response.sendDate;
-          this.fromAddress = response.fromAddress;
+          this.fromAddress = response.toAddress;
           this.toFormControl.setValue(this.fromAddress);
           this.ccAddress = response.toCcAddress;
           this.ccFormControl.setValue(this.ccAddress);
@@ -97,6 +99,12 @@ export class NewMessageComponent implements OnInit {
     this.receipiets = to;
   }
 
+  openSnackBar() {
+    this._snackBar.open(`Mensaje Enviado`, 'X', {
+      duration: 2000,
+    });
+  }
+
   send() {
     this.getReceipients();
     this.service.sendMail(
@@ -106,16 +114,20 @@ export class NewMessageComponent implements OnInit {
       this.messageFormControl.value
     ).subscribe(
       response => {
-        this.inboxService.onUpload(this.selectedFile, response.id ).subscribe(
-          response => {
-            this.back();
-            return this.user = response;
-          },
-          error => {
-            console.log(error);
-            return this.error = error;
-          }
-        );
+        if (this.selectedFile.name != null) {
+          this.inboxService.onUpload(this.selectedFile, response.id ).subscribe(
+            response => {
+              this.back();
+              return this.user = response;
+            },
+            error => {
+              console.log(error);
+              return this.error = error;
+            }
+          );
+        }
+        this.openSnackBar();
+        this.back();
       },
       error => {
         return this.error = error;
@@ -131,7 +143,6 @@ export class NewMessageComponent implements OnInit {
 
   toFormControl = new FormControl('', [
     Validators.required,
-    Validators.email,
   ]);
 
   subjectFormControl = new FormControl('');

@@ -100,7 +100,7 @@ public class MessageServiceImpl implements IMessageService {
 
 	private List<String> getEmailName(MessageDTO msg, int type) {
 		List<String> emails = new ArrayList<>();
-		List<ReceiverModel> toRec = receiverRepository.findByIdMailAndType(msg.getId(), type);
+		List<ReceiverModel> toRec = receiverRepository.findByIdMailAndTypeOrderByDate(msg.getId(), type);
 		for (ReceiverModel recModel : toRec) {
 			Optional<UserModel> usr = userRepository.findById(recModel.getIdReceiver());
 			emails.add(usr.isPresent() ? usr.get().getMail() : "Unknown User");
@@ -137,8 +137,17 @@ public class MessageServiceImpl implements IMessageService {
 	public MessageDTO getMessage(Integer id) {
 		Optional<MessageModel> response = msgRepository.findById(id);
 		if (response.isPresent()) {
+			MessageModel msgModel = response.get();
+			MessageDTO msg = modelMapper.map(msgModel, MessageDTO.class);
+			msg.setToAddress(new ArrayList<>());
+			msg.getToAddress().addAll(getEmailName(msg, ReceiverDTO.TO));
 
-			return modelMapper.map(response.get(), MessageDTO.class);
+			msg.setToCcAddress(new ArrayList<>());
+			msg.getToCcAddress().addAll(getEmailName(msg, ReceiverDTO.CC));
+
+			msg.setToCcoAddress(new ArrayList<>());
+			msg.getToCcoAddress().addAll(getEmailName(msg, ReceiverDTO.CCO));
+			return msg;
 		}
 		throw new RuntimeException("You are trying to retrieve an invalid message");
 	}
